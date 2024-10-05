@@ -1,9 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+
 const questionRoutes = require("./routes/questionRoutes");
 const quizRoutes = require("./routes/quizRoutes.js");
 const answerRoutes = require("./routes/answerRoutes.js");
+const userRoutes = require("./routes/userRoutes.js");
 
 const app = express();
 
@@ -23,9 +25,10 @@ const connectDB = async () => {
 connectDB();
 
 // Routes
+app.use("/api/v1", userRoutes);
 app.use("/api/v1", quizRoutes);
-app.use('/api/v1', questionRoutes);
-app.use('/api/v1', answerRoutes);
+app.use("/api/v1", questionRoutes);
+app.use("/api/v1", answerRoutes);
 
 const PORT = process.env.PORT || 5004;
 const server = app.listen(PORT, () => {
