@@ -1,6 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const questionRoutes = require("./routes/questionRoutes");
+const quizRoutes = require("./routes/quizRoutes.js");
+const answerRoutes = require("./routes/answerRoutes.js");
 
 const app = express();
 
@@ -11,13 +14,18 @@ app.use(express.json());
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB connected');
+    console.log("MongoDB connected");
   } catch (err) {
-    console.error('Failed to connect to MongoDB:', err.message);
+    console.error("Failed to connect to MongoDB:", err.message);
     process.exit(1); // Exit process with failure
   }
 };
 connectDB();
+
+// Routes
+app.use("/api/v1", quizRoutes);
+app.use('/api/v1', questionRoutes);
+app.use('/api/v1', answerRoutes);
 
 const PORT = process.env.PORT || 5004;
 const server = app.listen(PORT, () => {
